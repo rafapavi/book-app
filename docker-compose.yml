@@ -3,29 +3,30 @@ version: '3.8'
 services:
   mysqldb:
     image: mysql:8.0
-    restart: unless-stopped
-    env_file: ./.env
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=root12345
+      MYSQL_ROOT_PASSWORD: 'sigma12345'
     ports:
-      - 3306:3306
+      - "3306:3306"
+    command: --init-file /data/application/init.sql
     volumes:
       - ./mysql-data:/var/lib/mysql
-      # - ./initialize_db:/docker-entrypoint-initdb.d
+      - ./initialize_db/init.sql:/data/application/init.sql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
+    platform: linux/amd64
   booking-api:
     depends_on:
-      - mysqldb
+      mysqldb:
+        condition: service_healthy
     build: .
     ports:
       - 8080:8080
     environment:
       - PORT=8080
-      - DB_HOST=127.0.0.1
+      - DB_HOST=mysqldb
       - DB_USER=root
       - DB_PASS=sigma12345
       - JWT_SECRET_KEY=superSecretKey

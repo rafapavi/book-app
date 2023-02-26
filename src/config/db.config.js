@@ -1,5 +1,5 @@
 const config = {
-  DB: "carsome_clone",
+  DB: "booking_app",
   dialect: "mysql",
 };
 export default config;
