@@ -9,7 +9,7 @@ class HotelService {
     return allHotels;
   };
 
-  getAllHotelById = async (id) => {
+  getHotelById = async (id) => {
     const car = await this.db.hotel.findByPk(id);
     return car;
   };

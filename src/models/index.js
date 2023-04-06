@@ -23,19 +23,19 @@ export const startDbConnection = (hostname, username, password) => {
     db.user = UserModel(sequelize, Sequelize.DataTypes);
 
     // Relationship between Hotel and Room
-    db.room.hasMany(db.hotel, {
+    db.room.belongsTo(db.hotel, {
       foreignKey: "hotelId",
     });
-    db.hotel.belongsTo(db.room, {
+    db.hotel.hasMany(db.room, {
       foreignKey: "hotelId",
     });
 
     // Relationship between Room and RoomDetail
-    db.room.hasOne(db.roomDetail, {
+    db.room.belongsTo(db.roomDetail, {
       foreignKey: "roomDetailId",
     });
 
-    db.roomDetail.belongsTo(db.room, {
+    db.roomDetail.hasOne(db.room, {
       foreignKey: "roomDetailId",
     });
 
